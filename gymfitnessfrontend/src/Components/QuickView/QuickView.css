@@ -1,0 +1,15 @@
+.QuickView
+{
+    width: 100vw;
+    height: 300px;
+    /* border: 3px solid red; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+}
+
+.QuickView h1{
+    color: white;
+}

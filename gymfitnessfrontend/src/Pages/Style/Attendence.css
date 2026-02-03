@@ -1,0 +1,44 @@
+/* Attendance.css */
+.AttendceMain {
+  position: relative;
+  width: 100%;
+  /* Ensures it fills the screen height perfectly */
+  min-height: calc(100vh - 70px); 
+  background-image: url("../PageAssets/dashboardBG3.jpeg");
+  background-size: cover;
+  background-position: center;
+  gap: 10px;
+  background-attachment: fixed; /* Keeps BG steady while content might scroll */
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Horizontal center */
+  align-items: center;     /* Vertical center */
+  padding: 20px;           /* Prevents touching edges on mobile */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.AttendceMain h1
+{
+    color: white;
+}
+
+.AttendceMain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* Slightly deeper overlay for better contrast */
+  backdrop-filter: blur(6px);    /* Increased blur for a premium look */
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1;
+}
+
+/* Ensure all child elements stay above the blur */
+.AttendceMain > * {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

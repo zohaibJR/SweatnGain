@@ -1,0 +1,367 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Full-screen container */
+.LoginMainDiv {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Inner content container */
+.InnerDiv {
+  width: 50vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Left side (image/branding) */
+.LeftSide {
+  width: 50%;
+  background-color: #0a4faf;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.LeftSide img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Right side (form) */
+.RightSide {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.RightSide img {
+  max-width: 120px;
+  margin-top: 20px;
+}
+
+.RightSide h1 {
+  margin-top: 30px;
+  font-size: 28px;
+  color: #0a4faf;
+  text-align: center;
+}
+
+/* Input fields container */
+.InputFeilds {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Input field styling */
+.InputFeilds input {
+  width: 80%;
+  padding: 12px 15px;
+  border-radius: 25px;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.InputFeilds input:hover {
+  border-color: #888;
+}
+
+.InputFeilds input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.InputFeilds input::placeholder {
+  color: #777;
+  font-size: 15px;
+}
+
+/* Forgot password link */
+.RightSide a {
+  margin-top: 10px;
+  color: #06284e;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.RightSide a:hover {
+  text-decoration: underline;
+}
+
+/* Login button */
+.RightSide button {
+  margin-top: 20px;
+  background-color: #0a4faf;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 60%;
+}
+
+.RightSide button:hover {
+  background-color: #083f8a;
+}
+
+.RightSide button:active {
+  transform: scale(0.97);
+}
+
+/* Sign-up text */
+.SignUpText {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.SignUpText h4 {
+  font-weight: lighter;
+  font-size: 16px;
+  color: #333;
+}
+
+.SignUpText a {
+  font-weight: bold;
+  color: #0a4faf;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.SignUpText a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive: Tablet */
+@media (max-width: 1024px) {
+  .InnerDiv {
+    width: 80vw;
+    height: auto;
+  }
+
+  .LeftSide, .RightSide {
+    width: 50%;
+    height: auto;
+  }
+
+  .RightSide img {
+    margin-top: 15px;
+  }
+}
+
+/* Responsive: Mobile */
+@media (max-width: 768px) {
+  .InnerDiv {
+    flex-direction: column;
+    width: 90vw;
+    height: auto;
+  }
+
+  .LeftSide, .RightSide {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .InputFeilds {
+    width: 100%;
+  }
+
+  .InputFeilds input {
+    width: 90%;
+  }
+
+  .RightSide button {
+    width: 80%;
+  }
+}
+
+/* Responsive: Small Phones */
+@media (max-width: 480px) {
+  .RightSide h1 {
+    font-size: 22px;
+    margin-top: 15px;
+  }
+
+  .InputFeilds input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .RightSide button {
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 90%;
+  }
+
+  .SignUpText h4 {
+    font-size: 14px;
+  }
+}
+
+
+
+/*
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.LoginMainDiv {
+  width: 100vw;
+  height: 100vh;
+  background-color: lightgray;
+  border: 3px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.InnerDiv
+{
+    width: 50vw;
+    height: 60vh;
+    border: 3px solid red;
+    display: flex;
+    flex-direction: row;
+}
+
+.LeftSide
+{
+    width: 25vw;
+    height: 60vh;
+    border: 3px solid rgb(17, 0, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.RightSide
+{
+    width: 25vw;
+    height: 60vh;
+    border: 3px solid rgb(0, 255, 115);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.RightSide img
+{
+    margin-top: 60px;
+}
+
+.RightSide h1
+{
+    margin-top: 60px;
+    align-items: center;
+}
+.InputFeilds
+{
+    margin-top: 20px;
+    width: 25vw;
+    height: auto;
+    border: 3px solid rgb(200, 255, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.InputFeilds input {
+    width: 70%;                 
+    padding: 12px 15px;         
+    margin: 10px 0;             
+    border-radius: 20px;        
+    border: 2px solid #888;     
+    font-size: 16px;
+    outline: none;              
+    transition: 0.3s ease;      
+}
+
+.InputFeilds input:hover {
+  border-color: #444242;
+}
+
+.InputFeilds input:focus {
+  border-color: #4A90E2;      
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.InputFeilds input::placeholder {
+  color: #505052;
+  font-size: 15px;
+}
+
+.RightSide a
+{
+    color: rgb(0, 0, 0);
+}
+
+.RightSide button
+{
+    margin-top: 20px;
+    background-color: #0A4FAF;       
+    color: #fff;                    
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;             
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease;          
+    width: 30%;
+}
+
+.RightSide button:hover {
+  background-color: #083F8A;      
+}
+
+.SignUpText
+{
+    margin-top: 30px;
+}
+
+.SignUpText h4
+{
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+.SignUpText a
+{
+    font-weight: bolder;
+    color: #06284e;
+    font-size: 19px;
+}
+
+*/

@@ -1,0 +1,41 @@
+.AttendenceChart {
+    width: 320px;
+    height: 290px;
+    padding: 16px;
+
+    background: rgba(46, 85, 119, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.AttendenceChart:hover {
+    transform: translateY(-6px);
+    background: rgba(46, 85, 119, 0.8);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
+}
+
+.AttendenceChart h1 {
+    font-size: 18px; /* slightly smaller */
+    text-align: center;
+    margin: 0 0 12px 0;
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Ensure canvas fits container */
+.AttendenceChart canvas {
+    max-width: 100% !important;
+    max-height: 220px !important; /* fits nicely inside 290px card */
+}

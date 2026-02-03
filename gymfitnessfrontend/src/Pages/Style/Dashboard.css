@@ -1,0 +1,28 @@
+.MainDashboard {
+    position: relative;
+    background-image: url("../PageAssets/dashboardBG3.jpeg");
+    background-color: rgb(89, 142, 255);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.MainDashboard::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.45)
+    );
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1;
+}
+
+/* Make sure content stays above overlay */
+.MainDashboard > * {
+    position: relative;
+    z-index: 2;
+}
