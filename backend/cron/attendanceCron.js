@@ -4,43 +4,49 @@ import Attendance from '../models/Attendence.js';
 
 // ⏰ Run every day at 23:59
 cron.schedule('59 23 * * *', async () => {
-  console.log('🕚 Running end-of-day auto absent cron');
+    console.log('🕚 Running end-of-day attendance cron');
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-  try {
-    const users = await User.find();
+        const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-    for (const user of users) {
+        const users = await User.find();
 
-      // Check if attendance already exists for today
-      const alreadyMarked = await Attendance.findOne({
-        user: user._id,
-        date: today
-      });
+        for (const user of users) {
 
-      if (alreadyMarked) continue;
+            // Check if attendance already exists for today
+            const alreadyMarked = await Attendance.findOne({ user: user._id, date: today });
+            if (alreadyMarked) continue;
 
-      // Get last attendance for weight
-      const lastAttendance = await Attendance
-        .findOne({ user: user._id })
-        .sort({ date: -1 });
+            // Get last recorded weight
+            const lastAttendance = await Attendance.findOne({ user: user._id }).sort({ date: -1 });
+            const weightToUse = lastAttendance ? lastAttendance.weight : 0; // 0 if no previous record
 
-      // If no history, skip
-      if (!lastAttendance) continue;
+            if (dayOfWeek === 0) {
+                // SUNDAY → mark Present, carry forward weight
+                await Attendance.create({
+                    user: user._id,
+                    date: today,
+                    status: 'Present',
+                    weight: weightToUse
+                });
+                console.log(`✅ Auto Present marked for ${user.email} (Sunday)`);
 
-      await Attendance.create({
-        user: user._id,
-        date: today,
-        status: 'Absent',
-        weight: lastAttendance.weight
-      });
+            } else {
+                // WEEKDAY → mark Absent, carry forward weight
+                await Attendance.create({
+                    user: user._id,
+                    date: today,
+                    status: 'Absent',
+                    weight: weightToUse
+                });
+                console.log(`❌ Auto Absent marked for ${user.email}`);
+            }
+        }
 
-      console.log(`❌ Auto Absent marked for ${user.email}`);
+    } catch (error) {
+        console.error('Cron Error:', error);
     }
-
-  } catch (error) {
-    console.error('Cron Error:', error);
-  }
 });

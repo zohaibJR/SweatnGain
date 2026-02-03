@@ -1,5 +1,144 @@
+// controllers/attendanceController.js
 import Attendance from '../models/Attendence.js';
 import User from '../models/user.js';
+
+const formatDate = (date) => {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
+
+export const getLast7DaysAttendanceRecords = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - 6);
+
+    // Fetch existing attendance
+    const records = await Attendance.find({
+      user: user._id,
+      date: { $gte: startDate, $lte: today }
+    }).sort({ date: 1 });
+
+    const result = [];
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+
+      const record = records.find(r => {
+        const rDate = new Date(r.date);
+        rDate.setHours(0,0,0,0);
+        return rDate.getTime() === date.getTime();
+      });
+
+      if (record) {
+        result.push({ date: formatDate(record.date), status: record.status });
+      } else {
+        // Auto-fill
+        let status = 'Absent';
+        let weight = 0;
+
+        if (date.getDay() === 0) { // Sunday
+          status = 'Present';
+          const lastDay = await Attendance.findOne({
+            user: user._id,
+            date: { $lt: date }
+          }).sort({ date: -1 });
+
+          weight = lastDay ? lastDay.weight : 0;
+
+          // Save Sunday attendance in DB
+          await Attendance.create({
+            user: user._id,
+            date,
+            status,
+            weight
+          });
+        }
+
+        result.push({ date: formatDate(date), status });
+      }
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getLast7DaysWeightRecords = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - 6);
+
+    const records = await Attendance.find({
+      user: user._id,
+      date: { $gte: startDate, $lte: today }
+    }).sort({ date: 1 });
+
+    const result = [];
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+
+      const record = records.find(r => {
+        const rDate = new Date(r.date);
+        rDate.setHours(0,0,0,0);
+        return rDate.getTime() === date.getTime();
+      });
+
+      if (record) {
+        result.push({ date: formatDate(record.date), weight: record.weight });
+      } else {
+        // Auto-fill
+        let weight = 0;
+
+        if (date.getDay() === 0) { // Sunday
+          const lastDay = await Attendance.findOne({
+            user: user._id,
+            date: { $lt: date }
+          }).sort({ date: -1 });
+
+          weight = lastDay ? lastDay.weight : 0;
+
+          // Save Sunday attendance in DB
+          await Attendance.create({
+            user: user._id,
+            date,
+            status: 'Present',
+            weight
+          });
+        }
+
+        result.push({ date: formatDate(date), weight });
+      }
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // ---------------- SUBMIT ATTENDANCE ----------------
 export const submitAttendance = async (req, res) => {
@@ -246,78 +385,5 @@ export const getLast10DaysAttendancePie = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-// ---------------- LAST 7 DAYS WEIGHT RECORDS ----------------
-export const getLast7DaysWeightRecords = async (req, res) => {
-  try {
-    const { email } = req.query;
-    if (!email) return res.status(400).json({ message: "Email required" });
-
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 6);
-
-    const records = await Attendance.find({
-      user: user._id,
-      date: { $gte: startDate, $lte: today }
-    })
-      .sort({ date: -1 })
-      .select("date weight -_id");
-
-    const formatted = records.map(item => ({
-      date: item.date.toISOString().split("T")[0],
-      weight: item.weight
-    }));
-
-    res.json(formatted);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-
-// ---------------- LAST 7 DAYS ATTENDANCE RECORDS ----------------
-export const getLast7DaysAttendanceRecords = async (req, res) => {
-  try {
-    const { email } = req.query;
-    if (!email) return res.status(400).json({ message: "Email required" });
-
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 6);
-
-    const records = await Attendance.find({
-      user: user._id,
-      date: { $gte: startDate, $lte: today }
-    })
-      .sort({ date: -1 })
-      .select("date status -_id");
-
-    const formatted = records.map(item => ({
-      date: item.date.toISOString().split("T")[0],
-      status: item.status
-    }));
-
-    res.json(formatted);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-
-
-
 
 
