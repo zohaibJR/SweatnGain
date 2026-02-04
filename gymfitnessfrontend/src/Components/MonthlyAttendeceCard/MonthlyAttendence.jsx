@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../MonthlyAttendeceCard/MonthlyAttendence.css';
+import './MonthlyAttendence.css';
 
 function MonthlyAttendence() {
   const [attendance, setAttendance] = useState(null);
-  const email = localStorage.getItem("userEmail"); // get logged-in user's email
+  const email = localStorage.getItem("userEmail");
 
   useEffect(() => {
     const fetchMonthlyAttendance = async () => {
@@ -14,7 +14,7 @@ function MonthlyAttendence() {
         );
         setAttendance(res.data);
       } catch (err) {
-        console.error("Error fetching monthly attendance:", err);
+        console.error(err);
       }
     };
 
@@ -22,12 +22,10 @@ function MonthlyAttendence() {
   }, [email]);
 
   return (
-    <div className="MonthlyAttendenceCard">
+    <div className="DashboardCard">
       <h1>Monthly Attendance</h1>
       <h2>
-        {attendance
-          ? `${attendance.presentCount} / ${attendance.totalDays} Days`
-          : "Loading..."}
+        {attendance ? `${attendance.presentCount} / ${attendance.totalDays} Days` : "Loading..."}
       </h2>
     </div>
   );

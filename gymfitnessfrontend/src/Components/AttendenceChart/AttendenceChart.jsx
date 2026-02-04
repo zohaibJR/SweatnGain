@@ -12,7 +12,7 @@ import './AttendenceChart.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-function AttendanceLast10DaysPie() {
+function AttendenceChart() {
   const [attendance, setAttendance] = useState(null);
   const email = localStorage.getItem('userEmail');
 
@@ -20,14 +20,10 @@ function AttendanceLast10DaysPie() {
     if (!email) return;
 
     const fetchAttendance = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/attendance/last10days/pie?email=${email}`
-        );
-        setAttendance(res.data);
-      } catch (err) {
-        console.error('Error fetching attendance data', err);
-      }
+      const res = await axios.get(
+        `http://localhost:5000/api/attendance/last10days/pie?email=${email}`
+      );
+      setAttendance(res.data);
     };
 
     fetchAttendance();
@@ -39,34 +35,33 @@ function AttendanceLast10DaysPie() {
     labels: ['Present', 'Absent'],
     datasets: [
       {
-        label: 'days',
         data: [attendance.presentCount, attendance.absentCount],
-        backgroundColor: ['rgb(255, 206, 86)', 'rgb(255, 99, 132)'], // Yellow for Present, Red for Absent
-        hoverOffset: 10
+        backgroundColor: ['rgb(255,206,86)', 'rgb(255,99,132)']
       }
     ]
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // <--- important for small containers
+    maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
         text: `Attendance - Last ${attendance.totalDays} Days`,
-        color: '#fff',
-        font: { size: 16 }
+        color: '#fff'
       },
-      legend: { position: 'bottom', labels: { color: '#fff' } }
+      legend: {
+        position: 'bottom',
+        labels: { color: '#fff' }
+      }
     }
   };
 
   return (
     <div className="AttendenceChart">
-      {/* <h1>Attendance Last {attendance.totalDays} Days</h1> */}
       <Pie data={chartData} options={options} />
     </div>
   );
 }
 
-export default AttendanceLast10DaysPie;
+export default AttendenceChart;

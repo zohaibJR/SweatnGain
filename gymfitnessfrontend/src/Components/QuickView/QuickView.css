@@ -1,15 +1,26 @@
-.QuickView
-{
-    width: 100vw;
-    height: 300px;
-    /* border: 3px solid red; */
+.QuickView {
+    width: 100%;
+    min-height: 300px;
+
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 80px;
+    gap: 60px;
+
+    padding: 10px 20px;
 }
 
-.QuickView h1{
-    color: white;
+/* Tablet */
+@media (max-width: 1024px) {
+    .QuickView {
+        gap: 30px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .QuickView {
+        flex-direction: column;
+        gap: 20px;
+    }
 }

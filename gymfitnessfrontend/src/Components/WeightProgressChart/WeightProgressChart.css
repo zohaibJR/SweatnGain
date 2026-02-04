@@ -1,108 +1,46 @@
 .WeightProgressChart {
-    width: 320px;
-    height: 290px;
-    padding: 16px;
+  width: 100%;
+  max-width: 380px;
+  height: 300px;
 
-    background: rgba(46, 85, 119, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+  padding: 14px;
 
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(46, 85, 119, 0.65);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
 }
 
 .WeightProgressChart:hover {
-    transform: translateY(-6px);
-    background: rgba(46, 85, 119, 0.8);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
+  transform: translateY(-6px);
 }
 
-/* Title */
-.WeightProgressChart h1 {
-    font-size: 22px;
-    text-align: center;
-    margin: 8px 0 16px;
-    color: #ffffff;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+.WeightProgressChart canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-/* List Container */
-.WeightList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 210px;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-/* Each Row */
-.WeightRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 8px 10px;
-    border-radius: 10px;
-
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    font-size: 14px;
-
-    transition: background 0.2s ease;
-}
-
-.WeightRow:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Date */
-.Date {
-    width: 70px;
-    font-weight: 500;
-}
-
-/* Status */
-.Status {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-weight: 500;
-}
-
-.Status.Present {
-    background: rgba(0, 200, 83, 0.25);
-    color: #00e676;
-}
-
-.Status.Absent {
-    background: rgba(244, 67, 54, 0.25);
-    color: #ff5252;
-}
-
-/* Weight */
-.Weight {
-    font-weight: 600;
-}
-
-/* No Data */
 .NoData {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    margin-top: 40px;
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+  margin-top: 120px;
 }
 
-/* Scrollbar (Optional) */
-.WeightList::-webkit-scrollbar {
-    width: 4px;
+/* Tablet */
+@media (max-width: 1024px) {
+  .WeightProgressChart {
+    max-width: 340px;
+    height: 280px;
+  }
 }
 
-.WeightList::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+/* Mobile */
+@media (max-width: 480px) {
+  .WeightProgressChart {
+    max-width: 95%;
+    height: 260px;
+  }
 }

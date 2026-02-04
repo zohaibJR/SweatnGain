@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../CurrentWeight/CurrentWeight.css';
+import './CurrentWeight.css';
 
 function CurrentWeight() {
-
   const [weight, setWeight] = useState(null);
   const email = localStorage.getItem("userEmail");
 
@@ -23,7 +22,7 @@ function CurrentWeight() {
   }, [email]);
 
   return (
-    <div className="CurrentWeight">
+    <div className="DashboardCard">
       <h1>Current Weight</h1>
       <h2>{weight !== null ? `${weight} kg` : "Loading..."}</h2>
     </div>

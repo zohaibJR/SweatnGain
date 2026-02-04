@@ -1,28 +1,32 @@
 .MainDashboard {
-    position: relative;
-    background-image: url("../PageAssets/dashboardBG3.jpeg");
-    background-color: rgb(89, 142, 255);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-image: url("../PageAssets/dashboardBG3.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  overflow-x: hidden;
 }
 
 .MainDashboard::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        rgba(0, 0, 0, 0.45),
-        rgba(0, 0, 0, 0.45)
-    );
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1;
 }
 
-/* Make sure content stays above overlay */
 .MainDashboard > * {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
 }

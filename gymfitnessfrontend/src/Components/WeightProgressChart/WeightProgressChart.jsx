@@ -35,10 +35,10 @@ function WeightProgressChart() {
         );
         setData(res.data);
       } catch (err) {
-        console.error("Error fetching weight data", err);
+        console.error(err);
       }
     };
-    fetchLast7Days();
+    if (email) fetchLast7Days();
   }, [email]);
 
   const chartData = {
@@ -49,7 +49,6 @@ function WeightProgressChart() {
       {
         label: 'Weight (kg)',
         data: data.map(item => item.weight),
-        fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.3
       }
@@ -58,26 +57,23 @@ function WeightProgressChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: true,
-        position: 'top'
-      },
+      legend: { labels: { color: '#fff' } },
       title: {
         display: true,
-        text: 'Weight Progress Last 7 Days'
+        text: 'Weight Progress (Last 7 Days)',
+        color: '#fff'
       }
     },
     scales: {
-      y: {
-        beginAtZero: false
-      }
+      x: { ticks: { color: '#fff' } },
+      y: { ticks: { color: '#fff' } }
     }
   };
 
   return (
     <div className="WeightProgressChart">
-      <h1>Weight Progress</h1>
       {data.length === 0 ? (
         <p className="NoData">No data available</p>
       ) : (
