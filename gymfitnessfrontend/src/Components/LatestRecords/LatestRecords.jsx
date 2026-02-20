@@ -12,23 +12,26 @@ function LatestRecords() {
         const email = localStorage.getItem('userEmail');
         if (!email) {
           alert('User not logged in');
+          setLoading(false);
           return;
         }
 
-        const res = await axios.get(
+        // Attendance records
+        const attRes = await axios.get(
           `http://localhost:5000/api/attendance/last7days/attendance-records?email=${email}`
         );
 
+        // Weight records
         const weightRes = await axios.get(
           `http://localhost:5000/api/attendance/last7days/weight-records?email=${email}`
         );
 
-        const combinedRecords = res.data.map((att) => {
-          const weightObj = weightRes.data.find((w) => w.date === att.date);
+        const combinedRecords = attRes.data.map(att => {
+          const weightObj = weightRes.data.find(w => w.date === att.date);
           return {
             date: att.date,
             status: att.status,
-            weight: weightObj ? weightObj.weight : null,
+            weight: weightObj ? weightObj.weight : null
           };
         });
 
@@ -59,23 +62,15 @@ function LatestRecords() {
       {records.length === 0 ? (
         <div style={{ color: '#fff', marginTop: '10px' }}>No records found</div>
       ) : (
-        records.map((record) => {
-          const formattedDate = new Date(record.date).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-          });
-
-          return (
-            <div className="records-row" key={record.date}>
-              <span>{formattedDate}</span>
-              <span>{record.weight ? `${record.weight} kg` : '-'}</span>
-              <span className={record.status === 'Present' ? 'present' : 'absent'}>
-                {record.status}
-              </span>
-            </div>
-          );
-        })
+        records.map(record => (
+          <div className="records-row" key={record.date}>
+            <span>{record.date}</span>
+            <span>{record.weight ? `${record.weight} kg` : '-'}</span>
+            <span className={record.status === 'Present' ? 'present' : 'absent'}>
+              {record.status}
+            </span>
+          </div>
+        ))
       )}
     </div>
   );

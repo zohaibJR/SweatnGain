@@ -7,6 +7,7 @@ const formatDate = (date) => {
   return date.toLocaleDateString('en-US', options);
 };
 
+// Get last 7 days attendance records
 export const getLast7DaysAttendanceRecords = async (req, res) => {
   try {
     const { email } = req.query;
@@ -18,55 +19,25 @@ export const getLast7DaysAttendanceRecords = async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 6);
+    const signupDate = new Date(user.createdAt);
+    signupDate.setHours(0, 0, 0, 0);
 
-    // Fetch existing attendance
+    const startDate = signupDate > new Date(today.getTime() - 6 * 24*60*60*1000) 
+      ? signupDate 
+      : new Date(today.getTime() - 6 * 24*60*60*1000);
+
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
     }).sort({ date: 1 });
 
-    const result = [];
+    const result = records.map(r => ({
+      date: formatDate(r.date),
+      status: r.status
+    }));
 
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-
-      const record = records.find(r => {
-        const rDate = new Date(r.date);
-        rDate.setHours(0,0,0,0);
-        return rDate.getTime() === date.getTime();
-      });
-
-      if (record) {
-        result.push({ date: formatDate(record.date), status: record.status });
-      } else {
-        // Auto-fill
-        let status = 'Absent';
-        let weight = 0;
-
-        if (date.getDay() === 0) { // Sunday
-          status = 'Present';
-          const lastDay = await Attendance.findOne({
-            user: user._id,
-            date: { $lt: date }
-          }).sort({ date: -1 });
-
-          weight = lastDay ? lastDay.weight : 0;
-
-          // Save Sunday attendance in DB
-          await Attendance.create({
-            user: user._id,
-            date,
-            status,
-            weight
-          });
-        }
-
-        result.push({ date: formatDate(date), status });
-      }
-    }
+    // Sort descending (latest first)
+    result.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.json(result);
   } catch (err) {
@@ -75,6 +46,8 @@ export const getLast7DaysAttendanceRecords = async (req, res) => {
   }
 };
 
+
+// Get last 7 days weight records
 export const getLast7DaysWeightRecords = async (req, res) => {
   try {
     const { email } = req.query;
@@ -84,54 +57,27 @@ export const getLast7DaysWeightRecords = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 6);
+    const signupDate = new Date(user.createdAt);
+    signupDate.setHours(0, 0, 0, 0);
+
+    const startDate = signupDate > new Date(today.getTime() - 6 * 24*60*60*1000) 
+      ? signupDate 
+      : new Date(today.getTime() - 6 * 24*60*60*1000);
 
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
     }).sort({ date: 1 });
 
-    const result = [];
+    const result = records.map(r => ({
+      date: formatDate(r.date),
+      weight: r.weight
+    }));
 
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-
-      const record = records.find(r => {
-        const rDate = new Date(r.date);
-        rDate.setHours(0,0,0,0);
-        return rDate.getTime() === date.getTime();
-      });
-
-      if (record) {
-        result.push({ date: formatDate(record.date), weight: record.weight });
-      } else {
-        // Auto-fill
-        let weight = 0;
-
-        if (date.getDay() === 0) { // Sunday
-          const lastDay = await Attendance.findOne({
-            user: user._id,
-            date: { $lt: date }
-          }).sort({ date: -1 });
-
-          weight = lastDay ? lastDay.weight : 0;
-
-          // Save Sunday attendance in DB
-          await Attendance.create({
-            user: user._id,
-            date,
-            status: 'Present',
-            weight
-          });
-        }
-
-        result.push({ date: formatDate(date), weight });
-      }
-    }
+    // Sort descending (latest first)
+    result.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.json(result);
   } catch (err) {
