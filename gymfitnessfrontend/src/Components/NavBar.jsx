@@ -5,41 +5,24 @@ import '../Components/NavBar.css';
 
 function NavBar() {
   const navigate = useNavigate();
-  const email = localStorage.getItem("userEmail");
-  const token = localStorage.getItem("token");
-
-  // State to control confirmation popup
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        'http://localhost:5000/api/users/logout',
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      // Clear localStorage
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('token');
-
-      navigate('/login');
+      await axios.post('http://localhost:5000/api/users/logout', {});
     } catch (err) {
-      console.error("Logout failed:", err);
+      console.error("Logout request failed:", err);
+    } finally {
       localStorage.removeItem('userEmail');
-      localStorage.removeItem('token');
-      navigate('/login');
+      localStorage.removeItem('isLoggedIn');
+      navigate('/');
     }
   };
 
   return (
     <div className='mainDiv'>
       <div className="LeftSide">
-        <h2 className="logo"></h2>
+        <h2 className="logo">SweatAndGain 💪</h2>
       </div>
 
       <div className="RightSide">
@@ -55,7 +38,6 @@ function NavBar() {
         </ul>
       </div>
 
-      {/* Logout Confirmation Popup */}
       {showConfirm && (
         <div className="popupOverlay">
           <div className="popupBox">

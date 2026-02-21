@@ -1,13 +1,52 @@
-// controllers/attendanceController.js
 import Attendance from '../models/Attendence.js';
 import User from '../models/user.js';
+import { autoFillAbsentDays } from '../utils/autoFillAttendance.js';
 
 const formatDate = (date) => {
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  return new Date(date).toLocaleDateString('en-US', options);
 };
 
-// Get last 7 days attendance records
+// ---------------- SUBMIT ATTENDANCE ----------------
+export const submitAttendance = async (req, res) => {
+  try {
+    const { email, status, weight } = req.body;
+
+    if (!email || !status || weight === undefined) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Normalize today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Auto-fill absent days for any missed days since last attendance
+    await autoFillAbsentDays(user._id);
+
+    // Prevent duplicate attendance for today
+    const alreadyMarked = await Attendance.findOne({ user: user._id, date: today });
+    if (alreadyMarked) {
+      return res.status(400).json({ message: "Attendance already marked today" });
+    }
+
+    await Attendance.create({
+      user: user._id,
+      date: today,
+      status,
+      weight: parseFloat(weight)
+    });
+
+    res.status(201).json({ message: "Attendance submitted successfully" });
+  } catch (error) {
+    console.error("Submit Attendance Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ---------------- GET LAST 7 DAYS ATTENDANCE RECORDS ----------------
 export const getLast7DaysAttendanceRecords = async (req, res) => {
   try {
     const { email } = req.query;
@@ -22,22 +61,18 @@ export const getLast7DaysAttendanceRecords = async (req, res) => {
     const signupDate = new Date(user.createdAt);
     signupDate.setHours(0, 0, 0, 0);
 
-    const startDate = signupDate > new Date(today.getTime() - 6 * 24*60*60*1000) 
-      ? signupDate 
-      : new Date(today.getTime() - 6 * 24*60*60*1000);
+    const sevenDaysAgo = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+    const startDate = signupDate > sevenDaysAgo ? signupDate : sevenDaysAgo;
 
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
-    }).sort({ date: 1 });
+    }).sort({ date: -1 }); // latest first
 
     const result = records.map(r => ({
       date: formatDate(r.date),
       status: r.status
     }));
-
-    // Sort descending (latest first)
-    result.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.json(result);
   } catch (err) {
@@ -46,8 +81,7 @@ export const getLast7DaysAttendanceRecords = async (req, res) => {
   }
 };
 
-
-// Get last 7 days weight records
+// ---------------- GET LAST 7 DAYS WEIGHT RECORDS ----------------
 export const getLast7DaysWeightRecords = async (req, res) => {
   try {
     const { email } = req.query;
@@ -62,22 +96,18 @@ export const getLast7DaysWeightRecords = async (req, res) => {
     const signupDate = new Date(user.createdAt);
     signupDate.setHours(0, 0, 0, 0);
 
-    const startDate = signupDate > new Date(today.getTime() - 6 * 24*60*60*1000) 
-      ? signupDate 
-      : new Date(today.getTime() - 6 * 24*60*60*1000);
+    const sevenDaysAgo = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+    const startDate = signupDate > sevenDaysAgo ? signupDate : sevenDaysAgo;
 
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
-    }).sort({ date: 1 });
+    }).sort({ date: -1 }); // latest first
 
     const result = records.map(r => ({
       date: formatDate(r.date),
       weight: r.weight
     }));
-
-    // Sort descending (latest first)
-    result.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.json(result);
   } catch (err) {
@@ -86,60 +116,14 @@ export const getLast7DaysWeightRecords = async (req, res) => {
   }
 };
 
-// ---------------- SUBMIT ATTENDANCE ----------------
-export const submitAttendance = async (req, res) => {
-  try {
-    const { email, status, weight } = req.body;
-
-    if (!email || !status || weight === undefined) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Normalize today date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Prevent duplicate attendance
-    const alreadyMarked = await Attendance.findOne({
-      user: user._id,
-      date: today
-    });
-
-    if (alreadyMarked) {
-      return res.status(400).json({
-        message: "Attendance already marked today"
-      });
-    }
-
-    await Attendance.create({
-      user: user._id,
-      date: today,
-      status,
-      weight
-    });
-
-    res.status(201).json({ message: "Attendance submitted successfully" });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// ---------------- LAST 7 DAYS WEIGHT ----------------
+// ---------------- GET LAST 7 DAYS (for chart) ----------------
 export const getLast7DaysWeight = async (req, res) => {
   try {
     const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -150,45 +134,40 @@ export const getLast7DaysWeight = async (req, res) => {
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
-    }).sort({ date: 1 });
+    }).sort({ date: 1 }); // oldest first for chart
 
     res.json(records);
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// ---------------- LATEST WEIGHT ----------------
+// ---------------- GET LATEST WEIGHT ----------------
 export const getLatestWeight = async (req, res) => {
   try {
     const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const latest = await Attendance.findOne({ user: user._id })
       .sort({ date: -1 })
-      .select("weight");
+      .select('weight');
 
-    res.json({
-      weight: latest ? latest.weight : null
-    });
-
+    res.json({ weight: latest ? latest.weight : null });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// controllers/attendanceController.js
-
+// ---------------- GET MONTHLY ATTENDANCE ----------------
 export const getMonthlyAttendance = async (req, res) => {
   try {
     const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -201,10 +180,7 @@ export const getMonthlyAttendance = async (req, res) => {
     const presentCount = await Attendance.countDocuments({
       user: user._id,
       status: 'Present',
-      date: {
-        $gte: startOfMonth,
-        $lte: endOfMonth
-      }
+      date: { $gte: startOfMonth, $lte: endOfMonth }
     });
 
     res.json({
@@ -218,50 +194,36 @@ export const getMonthlyAttendance = async (req, res) => {
   }
 };
 
-// ---------------- WEIGHT CHANGE ----------------
+// ---------------- GET WEIGHT CHANGE ----------------
 export const getWeightChange = async (req, res) => {
   try {
     const { email } = req.query;
-
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
-    }
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Get earliest and latest attendance records
-    const records = await Attendance.find({ user: user._id }).sort({ date: 1 }); // oldest to newest
+    const records = await Attendance.find({ user: user._id }).sort({ date: 1 });
 
     if (records.length < 2) {
-      return res.json({ change: 0 }); // not enough data
+      return res.json({ change: 0, firstWeight: records[0]?.weight || 0, latestWeight: records[0]?.weight || 0 });
     }
 
     const firstWeight = records[0].weight;
     const latestWeight = records[records.length - 1].weight;
-
     const change = latestWeight - firstWeight;
 
-    res.json({
-      firstWeight,
-      latestWeight,
-      change
-    });
-
+    res.json({ firstWeight, latestWeight, change });
   } catch (error) {
     console.error("Weight change fetch failed:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
-// ---------------- MONTHLY ATTENDANCE PIE ----------------
+// ---------------- GET MONTHLY ATTENDANCE PIE ----------------
 export const getMonthlyAttendancePie = async (req, res) => {
   try {
     const { email } = req.query;
-
     if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -287,7 +249,7 @@ export const getMonthlyAttendancePie = async (req, res) => {
   }
 };
 
-// ---------------- LAST 10 DAYS ATTENDANCE PIE ----------------
+// ---------------- GET LAST 10 DAYS ATTENDANCE PIE ----------------
 export const getLast10DaysAttendancePie = async (req, res) => {
   try {
     const { email } = req.query;
@@ -296,40 +258,54 @@ export const getLast10DaysAttendancePie = async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Find user registration date (first attendance or user creation)
     const firstAttendance = await Attendance.findOne({ user: user._id }).sort({ date: 1 });
-    const registrationDate = firstAttendance ? firstAttendance.date : user.createdAt;
+    const registrationDate = firstAttendance ? new Date(firstAttendance.date) : new Date(user.createdAt);
+    registrationDate.setHours(0, 0, 0, 0);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Start date = max(today - 9 days, registration date)
     const tenDaysAgo = new Date(today);
     tenDaysAgo.setDate(today.getDate() - 9);
 
     const startDate = registrationDate > tenDaysAgo ? registrationDate : tenDaysAgo;
 
-    // Get attendance records in that period
     const records = await Attendance.find({
       user: user._id,
       date: { $gte: startDate, $lte: today }
-    }).sort({ date: 1 });
+    });
 
-    // Calculate Present and Absent days
-    const totalDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)) + 1; // inclusive
+    const totalDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
     const presentCount = records.filter(r => r.status === 'Present').length;
     const absentCount = totalDays - presentCount;
 
-    res.json({
-      totalDays,
-      presentCount,
-      absentCount
-    });
-
+    res.json({ totalDays, presentCount, absentCount });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+// ---------------- CHECK TODAY ATTENDANCE ----------------
+export const checkTodayAttendance = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ message: "Email required" });
 
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const record = await Attendance.findOne({ user: user._id, date: today });
+
+    res.json({
+      marked: !!record,
+      status: record ? record.status : null
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

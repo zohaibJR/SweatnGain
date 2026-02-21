@@ -1,26 +1,27 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-
-    name :{
-        type: String,
-        require: true,
-    },
-
-    email :{
-        type: String,
-        require: true,
-    },
-
-    country :{
-        type: String,
-        require: true,
-    },
-
-    password :{
-        type: String,
-        require: true,
-    },
-})
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  country: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+}, { timestamps: true }); // ← adds createdAt and updatedAt automatically
 
 export default mongoose.model('User', UserSchema);
