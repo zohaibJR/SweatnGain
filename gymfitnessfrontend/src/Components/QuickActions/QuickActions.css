@@ -1,90 +1,73 @@
-.QuickActions
-{
-    margin-top: 5px;
-    width: 320px;
-    height: 210px;
-    padding: 16px;
+/* ============================================================
+   13. QuickActions.css
+   ============================================================ */
+.QuickActions {
+  margin-top: 5px;
+  width: 320px;
+  min-height: 210px;
+  padding: 20px 16px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
 
-    /* background: rgba(46, 85, 119, 0.65); */
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
-    /* border-radius: 16px; */
-
-    /* border: 1px solid rgba(255, 255, 255, 0.15); */
-
-    /* box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.4); */
-
-    transition: all 0.3s ease;
-
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+.QuickActions:hover {
+  transform: translateY(-4px);
+  border-color: rgba(33,150,243,0.5);
 }
 
 .QuickActions h2 {
-    margin-bottom: 18px;
-
-    font-size: 25px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-
-    color: rgb(15, 156, 238);;
-
-    text-align: center;
-
-    text-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.45);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 16px;
 }
-
 
 .QuickActions button {
-    width: 100%;
-    max-width: 260px;
-    padding: 14px 18px;
-    margin: 10px 0;
-
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-
-    color: #ffffff;
-    background: rgb(15, 156, 238);
-
-    border: none;
-    border-radius: 04px;
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-
-    transition: all 0.25s ease;
+  width: 100%;
+  max-width: 260px;
+  padding: 13px 18px;
+  margin: 6px 0;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--blue-accent), var(--blue-bright));
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(33,150,243,0.3);
+  transition: all 0.25s ease;
 }
 
-/* Hover effect */
 .QuickActions button:hover {
-    transform: translateY(-3px);
-    box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    filter: brightness(1.05);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(33,150,243,0.5);
 }
 
-/* Active (click) effect */
 .QuickActions button:active {
-    transform: translateY(0);
-    box-shadow:
-        0 6px 14px rgba(0, 0, 0, 0.35);
-    filter: brightness(0.95);
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(33,150,243,0.3);
 }
 
-/* Focus for accessibility */
 .QuickActions button:focus {
-    outline: none;
-    box-shadow:
-        0 0 0 3px rgba(79, 172, 254, 0.5),
-        0 8px 20px rgba(0, 0, 0, 0.4);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(33,150,243,0.4), 0 6px 20px rgba(33,150,243,0.3);
+}
+
+@media (max-width: 768px) {
+  .QuickActions { width: 100%; max-width: 360px; }
 }

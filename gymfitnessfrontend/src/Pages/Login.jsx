@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './Style/Signup.css'
+import Logo from '../Pages/PageAssets/LogoW.png'
 
 function Login() {
 
@@ -35,43 +36,44 @@ function Login() {
     }
 
   return (
-    <div className='LoginMainDiv'>
-        <div className='InnerDiv'>
-            <div className='LeftSide'>
-                <img alt="Pic here" />
+<div className='LoginMainDiv'>
+    <div className='InnerDiv'>
+        {/* ── Left Side Logo ── */}
+        <div className='LeftSide'>
+            {/* <img src={Logo} alt="SweatAndGain Logo" className="leftLogo" /> */}
+        </div>
+
+        {/* ── Right Side (Logo + Login Form) ── */}
+        <div className="RightSide">
+            <img src={Logo} alt="SweatAndGain Logo" className="rightLogo" />
+            <h1>Login</h1>
+
+            <div className="InputFeilds">
+                <input 
+                    type="text" 
+                    placeholder='Enter Email Address'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <input 
+                    type="password"
+                    placeholder='Enter Password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
             </div>
 
-            <div className="RightSide">
-                <img alt="Logo Here" />
-                <h1>Login</h1>
+            <a href="">Forgot Password</a>
 
-                <div className="InputFeilds">
-                    <input 
-                        type="text" 
-                        placeholder='Enter Email Address'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+            <button onClick={handleLogin}>Login</button>
 
-                    <input 
-                        type="password"
-                        placeholder='Enter Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-
-                <a href="">Forgot Password</a>
-
-                <button onClick={handleLogin}>Login</button>
-
-                <div className='SignUpText'>
-                    <h4>Don't have your Account ? <a href="#" onClick={(e) => { e.preventDefault(); goToSignUp(); }}>Sign up</a></h4>
-                </div>
-
+            <div className='SignUpText'>
+                <h4>Don't have your Account? <a href="#" onClick={(e) => { e.preventDefault(); goToSignUp(); }}>Sign up</a></h4>
             </div>
         </div>
     </div>
+</div>
   )
 }
 

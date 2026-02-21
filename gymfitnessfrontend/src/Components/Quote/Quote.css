@@ -1,70 +1,43 @@
-/* ===================== */
-/* DESKTOP (unchanged) */
-/* ===================== */
+/* ============================================================
+   15. Quote.css
+   ============================================================ */
 .MainQuote {
-    width: 60vw;
-    height: 75px;
-    border: 3px solid blue;
-
-    margin: 0 auto;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(23, 46, 78, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, background 0.3s ease;
+  width: 60vw;
+  min-height: 68px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 24px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 50px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-/* Hover effect (kept) */
 .MainQuote:hover {
-    transform: translateY(-4px);
-    background: rgba(23, 46, 78, 0.8);
+  transform: translateY(-3px);
+  border-color: rgba(33,150,243,0.5);
 }
 
 .MainQuote h2 {
-    color: white;
-    font-size: 18px;
-    font-style: italic;
-    font-weight: 500;
-    text-align: center;
+  font-family: 'Inter', sans-serif;
+  color: var(--white-70);
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-
-/* ===================== */
-/* TABLET */
-/* ===================== */
 @media (max-width: 1024px) {
-    .MainQuote {
-        width: 80vw;
-        height: 70px;
-    }
-
-    .MainQuote h2 {
-        font-size: 16px;
-    }
+  .MainQuote { width: 78vw; }
+  .MainQuote h2 { font-size: 15px; }
 }
-
-
-/* ===================== */
-/* MOBILE */
-/* ===================== */
 @media (max-width: 480px) {
-    .MainQuote {
-        width: 90vw;
-        height: auto;
-        padding: 12px 10px;
-    }
-
-    .MainQuote h2 {
-        font-size: 14px;
-        line-height: 1.4;
-    }
+  .MainQuote { width: 92vw; border-radius: 16px; }
+  .MainQuote h2 { font-size: 13px; line-height: 1.5; }
 }

@@ -1,367 +1,266 @@
-/* Reset default styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
+/* ============================================================
+   3 & 4. Login.css / Signup.css  (shared classes)
+   ============================================================ */
 
-/* Full-screen container */
+/* Full-screen page */
 .LoginMainDiv {
   width: 100vw;
   height: 100vh;
-  background-color: #f0f2f5;
+  background: var(--navy);
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Inner content container */
-.InnerDiv {
-  width: 50vw;
-  height: 60vh;
-  display: flex;
-  flex-direction: row;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
   overflow: hidden;
 }
 
-/* Left side (image/branding) */
+/* Subtle grid bg */
+.LoginMainDiv::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,111,212,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,111,212,0.07) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* Glow orb */
+.LoginMainDiv::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: rgba(26,111,212,0.15);
+  border-radius: 50%;
+  filter: blur(120px);
+  top: -100px;
+  left: -100px;
+  pointer-events: none;
+}
+
+/* Card */
+.InnerDiv {
+  position: relative;
+  z-index: 1;
+  width: 52vw;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: row;
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+/* Left branding panel */
 .LeftSide {
   width: 50%;
-  background-color: #0a4faf;
+  background: linear-gradient(160deg, rgba(26,111,212,0.35), rgba(0,212,255,0.1));
+  border-right: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  gap: 20px;
+  padding: 30px;
+}
+
+/* Big logo/brand text in left panel */
+.LeftSide::before {
+  content: 'SWEAT & GAIN';
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-align: center;
+  text-shadow: 0 0 40px rgba(33,150,243,0.6);
 }
 
 .LeftSide img {
   max-width: 80%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 12px;
+  opacity: 0.85;
 }
 
-/* Right side (form) */
+/* Right form panel */
 .RightSide {
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 20px;
+  padding: 40px 30px;
 }
 
 .RightSide img {
-  max-width: 120px;
-  margin-top: 20px;
+  max-width: 90px;
+  margin-top: 10px;
+  opacity: 0.8;
 }
 
 .RightSide h1 {
-  margin-top: 30px;
-  font-size: 28px;
-  color: #06284e;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  letter-spacing: 3px;
+  color: var(--white);
   text-align: center;
+  margin-top: 20px;
+  margin-bottom: 4px;
 }
 
-/* Input fields container */
+/* Inputs wrapper */
 .InputFeilds {
-  margin-top: 20px;
+  margin-top: 16px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
   align-items: center;
 }
 
-/* Input field styling */
 .InputFeilds input {
-  width: 80%;
-  padding: 12px 15px;
-  border-radius: 25px;
-  border: 2px solid #ccc;
+  width: 85%;
+  padding: 13px 18px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(26,111,212,0.4);
+  background: rgba(255,255,255,0.05);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
   font-size: 16px;
+  font-weight: 500;
   outline: none;
   transition: 0.3s ease;
 }
 
-.InputFeilds input:hover {
-  border-color: #888;
-}
-
-.InputFeilds input:focus {
-  border-color: #4a90e2;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
 .InputFeilds input::placeholder {
-  color: #777;
+  color: rgba(255,255,255,0.4);
   font-size: 15px;
 }
 
-/* Forgot password link */
-.RightSide a {
-  margin-top: 10px;
-  color: #06284e;
-  text-decoration: none;
-  font-size: 14px;
+.InputFeilds input:hover {
+  border-color: rgba(33,150,243,0.6);
 }
 
-.RightSide a:hover {
+.InputFeilds input:focus {
+  border-color: var(--blue-bright);
+  background: rgba(33,150,243,0.08);
+  box-shadow: 0 0 0 3px rgba(33,150,243,0.15);
+}
+
+/* Forgot password / links */
+.RightSide > a {
+  margin-top: 10px;
+  color: var(--blue-glow);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.RightSide > a:hover {
+  opacity: 1;
   text-decoration: underline;
 }
 
-/* Login button */
-.RightSide button {
-  margin-top: 20px;
-  background-color: #0a4faf;
-  color: #fff;
+/* Primary button */
+.RightSide > button,
+.RightSide button[type="submit"] {
+  margin-top: 22px;
+  background: linear-gradient(135deg, var(--blue-accent), var(--blue-bright));
+  color: var(--white);
   border: none;
-  padding: 12px 20px;
-  border-radius: 25px;
-  font-size: 18px;
+  padding: 13px 20px;
+  border-radius: 50px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   cursor: pointer;
+  width: 65%;
   transition: 0.3s ease;
-  width: 60%;
+  box-shadow: 0 6px 24px rgba(33,150,243,0.35);
 }
 
-.RightSide button:hover {
-  background-color: #083f8a;
+.RightSide > button:hover,
+.RightSide button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(33,150,243,0.5);
 }
 
-.RightSide button:active {
+.RightSide > button:active,
+.RightSide button[type="submit"]:active {
   transform: scale(0.97);
 }
 
-/* Sign-up text */
+.RightSide > button:disabled,
+.RightSide button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Sign-up / login switch text */
 .SignUpText {
-  margin-top: 25px;
+  margin-top: 22px;
   text-align: center;
 }
 
 .SignUpText h4 {
-  font-weight: lighter;
-  font-size: 16px;
-  color: #333;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--white-70);
 }
 
 .SignUpText a {
-  font-weight: bold;
-  color: #0a4faf;
-  font-size: 16px;
+  font-weight: 600;
+  color: var(--cyan);
+  font-size: 14px;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 .SignUpText a:hover {
+  color: var(--blue-glow);
   text-decoration: underline;
 }
 
-/* Responsive: Tablet */
+/* Tablet */
 @media (max-width: 1024px) {
-  .InnerDiv {
-    width: 80vw;
-    height: auto;
-  }
-
-  .LeftSide, .RightSide {
-    width: 50%;
-    height: auto;
-  }
-
-  .RightSide img {
-    margin-top: 15px;
-  }
+  .InnerDiv { width: 78vw; min-height: auto; }
 }
 
-/* Responsive: Mobile */
+/* Mobile */
 @media (max-width: 768px) {
   .InnerDiv {
     flex-direction: column;
-    width: 90vw;
-    height: auto;
+    width: 92vw;
   }
-
   .LeftSide, .RightSide {
     width: 100%;
-    height: auto;
-    padding: 20px;
+    padding: 24px 20px;
   }
-
-  .InputFeilds {
-    width: 100%;
+  .LeftSide {
+    min-height: 120px;
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
   }
-
-  .InputFeilds input {
-    width: 90%;
-  }
-
-  .RightSide button {
-    width: 80%;
-  }
+  .InputFeilds input { width: 90%; }
+  .RightSide > button,
+  .RightSide button[type="submit"] { width: 80%; }
 }
 
-/* Responsive: Small Phones */
 @media (max-width: 480px) {
-  .RightSide h1 {
-    font-size: 22px;
-    margin-top: 15px;
-  }
-
-  .InputFeilds input {
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-
-  .RightSide button {
-    font-size: 16px;
-    padding: 10px 15px;
-    width: 90%;
-  }
-
-  .SignUpText h4 {
-    font-size: 14px;
-  }
+  .RightSide h1 { font-size: 30px; }
+  .InputFeilds input { font-size: 14px; padding: 11px 14px; }
+  .RightSide > button,
+  .RightSide button[type="submit"] { font-size: 15px; width: 90%; }
 }
-
-
-
-/*
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.LoginMainDiv {
-  width: 100vw;
-  height: 100vh;
-  background-color: lightgray;
-  border: 3px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.InnerDiv
-{
-    width: 50vw;
-    height: 60vh;
-    border: 3px solid red;
-    display: flex;
-    flex-direction: row;
-}
-
-.LeftSide
-{
-    width: 25vw;
-    height: 60vh;
-    border: 3px solid rgb(17, 0, 255);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.RightSide
-{
-    width: 25vw;
-    height: 60vh;
-    border: 3px solid rgb(0, 255, 115);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.RightSide img
-{
-    margin-top: 60px;
-}
-
-.RightSide h1
-{
-    margin-top: 60px;
-    align-items: center;
-}
-.InputFeilds
-{
-    margin-top: 20px;
-    width: 25vw;
-    height: auto;
-    border: 3px solid rgb(200, 255, 0);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.InputFeilds input {
-    width: 70%;                 
-    padding: 12px 15px;         
-    margin: 10px 0;             
-    border-radius: 20px;        
-    border: 2px solid #888;     
-    font-size: 16px;
-    outline: none;              
-    transition: 0.3s ease;      
-}
-
-.InputFeilds input:hover {
-  border-color: #444242;
-}
-
-.InputFeilds input:focus {
-  border-color: #4A90E2;      
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-.InputFeilds input::placeholder {
-  color: #505052;
-  font-size: 15px;
-}
-
-.RightSide a
-{
-    color: rgb(0, 0, 0);
-}
-
-.RightSide button
-{
-    margin-top: 20px;
-    background-color: #0A4FAF;       
-    color: #fff;                    
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;             
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s ease;          
-    width: 30%;
-}
-
-.RightSide button:hover {
-  background-color: #083F8A;      
-}
-
-.SignUpText
-{
-    margin-top: 30px;
-}
-
-.SignUpText h4
-{
-    font-weight: lighter;
-    font-size: 18px;
-}
-
-.SignUpText a
-{
-    font-weight: bolder;
-    color: #06284e;
-    font-size: 19px;
-}
-
-*/

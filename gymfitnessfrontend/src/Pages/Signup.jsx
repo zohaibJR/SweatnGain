@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../Pages/PageAssets/LogoW.png';
 
 function Signup() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Signup() {
     });
   };
 
-  // Go to login
+  // Go to login page
   const goToLogin = () => navigate("/");
 
   // Submit form
@@ -32,13 +33,7 @@ function Signup() {
     setError("");
 
     // Client-side validation
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.country ||
-      !formData.password ||
-      !formData.password2
-    ) {
+    if (!formData.name || !formData.email || !formData.country || !formData.password || !formData.password2) {
       setError("Please fill all fields");
       return;
     }
@@ -81,12 +76,14 @@ function Signup() {
   return (
     <div className='LoginMainDiv'>
       <div className='InnerDiv'>
+        {/* ── Left side (decorative / optional logo) ── */}
         <div className='LeftSide'>
-          <img alt="Pic here" />
+          {/* <img src={Logo} alt="SweatAndGain Logo" className="leftLogo" /> */}
         </div>
 
+        {/* ── Right side: Form + logo on top ── */}
         <div className="RightSide">
-          <img alt="Logo Here" />
+          <img src={Logo} alt="SweatAndGain Logo" className="rightLogo" />
           <h1>Sign Up</h1>
 
           {error && (
@@ -96,7 +93,6 @@ function Signup() {
           )}
 
           <form onSubmit={handleSubmit} className="InputFeilds">
-
             <input
               type="text"
               name="name"
@@ -144,11 +140,12 @@ function Signup() {
 
           <div className='SignUpText'>
             <h4>
-              Already have an Account?{" "}
-              <a href="#" onClick={(e) => { e.preventDefault(); goToLogin(); }}>Login</a>
+              Already have an account?{" "}
+              <a href="#" onClick={(e) => { e.preventDefault(); goToLogin(); }}>
+                Login
+              </a>
             </h4>
           </div>
-
         </div>
       </div>
     </div>
