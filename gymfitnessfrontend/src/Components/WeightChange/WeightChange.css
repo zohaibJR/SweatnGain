@@ -1,54 +1,9 @@
-/* ============================================================
-   18. WeightChange.css
-   ============================================================ */
-.WeightChange {
-  width: 280px;
-  min-height: 150px;
-  padding: 18px;
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 18px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-}
+/* WeightChange.css */
 
-.WeightChange:hover {
-  transform: translateY(-6px);
-  border-color: var(--blue-bright);
-  box-shadow: 0 14px 36px rgba(33,150,243,0.25);
-}
+.card-loss { --card-glow: rgba(0,230,118,0.12); border-color: rgba(0,230,118,0.2) !important; }
+.card-gain { --card-glow: rgba(255,68,68,0.12);  border-color: rgba(255,68,68,0.2) !important; }
 
-.WeightChange h1 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--white-70);
-}
-
-.WeightChange h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px;
-  letter-spacing: 1px;
-}
-
-.WeightChange h2.increase { color: var(--red); }
-.WeightChange h2.decrease { color: var(--green); }
-.WeightChange h2.neutral  { color: var(--white-70); }
-
-.WeightChange p {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--white-70);
-  line-height: 1.5;
+.change-icon {
+  --card-icon-bg:     rgba(33,150,243,0.12);
+  --card-icon-border: rgba(33,150,243,0.3);
 }

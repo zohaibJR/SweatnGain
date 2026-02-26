@@ -441,7 +441,7 @@ const features = [
 ];
 
 const team = [
-  { initials: 'ZR', name: 'Zohaib ur Rehman', role: 'Founder & Developer' },
+  { initials: 'Zohaib', name: 'Zohaib ur Rehman', role: 'Founder & Developer' },
   { initials: 'S & G', name: 'Sweat & Gain', role: 'The Vision' },
   { initials: '💪', name: 'You', role: 'The Athlete' },
 ];

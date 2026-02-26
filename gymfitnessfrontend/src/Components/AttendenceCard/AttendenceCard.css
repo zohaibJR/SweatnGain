@@ -1,57 +1,26 @@
-/* ============================================================
-   7 / 10 / 12. DashboardCard  (AttendenceCard / CurrentWeight / MonthlyAttendence)
-   ============================================================ */
-.DashboardCard {
-  width: 280px;
-  height: 160px;
-  padding: 18px;
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 18px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* AttendenceCard.css */
+
+.card-green { --card-glow: rgba(0,230,118,0.15); border-color: rgba(0,230,118,0.2) !important; }
+.card-red   { --card-glow: rgba(255,68,68,0.15);  border-color: rgba(255,68,68,0.2) !important; }
+
+.attendance-icon {
+  --card-icon-bg:     rgba(33,150,243,0.15);
+  --card-icon-border: rgba(33,150,243,0.3);
 }
 
-.DashboardCard:hover {
-  transform: translateY(-6px);
-  background: var(--card-hover);
-  border-color: var(--blue-bright);
-  box-shadow: 0 14px 36px rgba(33,150,243,0.25);
+.card-green .attendance-icon {
+  --card-icon-bg:     rgba(0,230,118,0.15);
+  --card-icon-border: rgba(0,230,118,0.35);
 }
 
-.DashboardCard h1 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 10px;
-  color: var(--white-70);
+.card-red .attendance-icon {
+  --card-icon-bg:     rgba(255,68,68,0.15);
+  --card-icon-border: rgba(255,68,68,0.35);
 }
 
-.DashboardCard h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  letter-spacing: 1px;
-  text-align: center;
-  color: var(--green);
-}
+.val-green { color: var(--green) !important; }
+.val-red   { color: var(--red) !important; }
+.val-muted { color: var(--white-30) !important; }
 
-@media (max-width: 1024px) {
-  .DashboardCard { width: 220px; height: 140px; }
-}
-@media (max-width: 768px) {
-  .DashboardCard { width: 45%; height: 130px; margin-bottom: 10px; }
-}
-@media (max-width: 480px) {
-  .DashboardCard { width: 90%; height: 120px; }
-  .DashboardCard h1 { font-size: 12px; }
-  .DashboardCard h2 { font-size: 26px; }
-}
+.bar-green { background: linear-gradient(90deg, #00e676, #69f0ae) !important; }
+.bar-red   { background: linear-gradient(90deg, #ff4444, #ff7070) !important; }

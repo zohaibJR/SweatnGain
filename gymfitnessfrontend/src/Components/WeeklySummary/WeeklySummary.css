@@ -1,49 +1,78 @@
-/* ============================================================
-   17. WeeklySummary.css
-   ============================================================ */
-.WeeklySummaryMain {
-  margin-top: 5px;
-  width: 320px;
-  min-height: 210px;
-  padding: 20px 18px;
+/* WeeklySummary.css */
+
+.WeeklySummary {
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 20px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  gap: 16px;
+  transition: transform 0.28s ease, border-color 0.28s ease;
 }
 
-.WeeklySummaryMain:hover {
+.WeeklySummary:hover {
   transform: translateY(-4px);
-  border-color: rgba(33,150,243,0.5);
+  border-color: rgba(33,150,243,0.45);
 }
 
-.WeeklySummaryMain h1 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--white-70);
-  margin-bottom: 10px;
-}
-
-.WeeklySummaryMain h4 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
+.WSTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
   color: var(--white);
-  padding: 8px 10px;
-  border-radius: 8px;
+}
+
+.WSStats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.WSStat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 14px;
+  border-radius: 12px;
   background: rgba(33,150,243,0.06);
   border: 1px solid rgba(33,150,243,0.12);
+  transition: background 0.2s, border-color 0.2s;
 }
 
-@media (max-width: 768px) {
-  .WeeklySummaryMain { width: 100%; max-width: 360px; }
+.WSStat:hover {
+  background: rgba(33,150,243,0.1);
+  border-color: rgba(33,150,243,0.25);
+}
+
+.WSStatIcon {
+  font-size: 20px;
+  width: 28px;
+  text-align: center;
+}
+
+.WSStatRight {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.WSStatLabel {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white-30);
+}
+
+.WSStatValue {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  line-height: 1;
 }

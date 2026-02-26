@@ -6,10 +6,8 @@ import AttendenceChart from '../AttendenceChart/AttendenceChart';
 function WeightProgress() {
   return (
     <div className="WeightProgress">
-      <div className="ProgressCharts">
-        <WeightProgressChart />
-        <AttendenceChart />
-      </div>
+      <WeightProgressChart />
+      <AttendenceChart />
     </div>
   );
 }

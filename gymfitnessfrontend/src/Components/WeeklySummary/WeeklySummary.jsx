@@ -1,82 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../WeeklySummary/WeeklySummary.css';
+import './WeeklySummary.css';
 
 function WeeklySummary() {
-  const [streak, setStreak] = useState(null);
-  const [monthlyAvg, setMonthlyAvg] = useState(null);
-  const [weightChange, setWeightChange] = useState(null);
+  const [streak,          setStreak]          = useState(null);
+  const [monthlyAvg,      setMonthlyAvg]      = useState(null);
+  const [weightChange,    setWeightChange]     = useState(null);
   const [weightChangeRaw, setWeightChangeRaw] = useState(null);
-
   const email = localStorage.getItem('userEmail');
 
   useEffect(() => {
     if (!email) return;
-
     const fetchData = async () => {
       try {
-        // 1. Monthly attendance for avg calculation
-        const monthlyRes = await axios.get(
-          `http://localhost:5000/api/attendance/monthly?email=${email}`
-        );
+        const [monthlyRes, weightRes, attRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/attendance/monthly?email=${email}`),
+          axios.get(`http://localhost:5000/api/attendance/weight-change?email=${email}`),
+          axios.get(`http://localhost:5000/api/attendance/last7days/attendance-records?email=${email}`)
+        ]);
+
         const { presentCount, totalDays } = monthlyRes.data;
         const avg = totalDays > 0 ? ((presentCount / totalDays) * 100).toFixed(0) : 0;
-        setMonthlyAvg(`${avg}% (${presentCount}/${totalDays} days)`);
+        setMonthlyAvg(`${avg}%`);
 
-        // 2. Weight change since first record
-        const weightRes = await axios.get(
-          `http://localhost:5000/api/attendance/weight-change?email=${email}`
-        );
         const { change } = weightRes.data;
         setWeightChangeRaw(change ?? 0);
         const sign = change > 0 ? '+' : '';
         setWeightChange(`${sign}${(change ?? 0).toFixed(1)} kg`);
 
-        // 3. Streak — use check-today + last7days attendance records
-        const attRes = await axios.get(
-          `http://localhost:5000/api/attendance/last7days/attendance-records?email=${email}`
-        );
-
-        // Records come latest-first; reverse to oldest→newest
         const records = [...attRes.data].reverse();
-
-        let currentStreak = 0;
+        let s = 0;
         for (let i = records.length - 1; i >= 0; i--) {
-          if (records[i].status === 'Present') {
-            currentStreak++;
-          } else {
-            break;
-          }
+          if (records[i].status === 'Present') s++;
+          else break;
         }
-        setStreak(currentStreak);
-
+        setStreak(s);
       } catch (err) {
         console.error('WeeklySummary fetch error:', err);
       }
     };
-
     fetchData();
   }, [email]);
 
-  const getWeightColor = () => {
-    if (weightChangeRaw === null) return '#fff';
-    if (weightChangeRaw > 0) return '#f44336'; // gained weight
-    if (weightChangeRaw < 0) return '#4caf50'; // lost weight
-    return '#fff'; // no change
-  };
+  const weightColor = weightChangeRaw === null ? 'var(--white)'
+    : weightChangeRaw < 0 ? 'var(--green)'
+    : weightChangeRaw > 0 ? 'var(--red)'
+    : 'var(--white-70)';
+
+  const stats = [
+    { icon: '🔥', label: 'Current Streak', value: streak === null ? '...' : `${streak} day${streak !== 1 ? 's' : ''}`, color: '#ff9800' },
+    { icon: '📅', label: 'Monthly Avg',    value: monthlyAvg ?? '...',    color: 'var(--cyan)' },
+    { icon: '⚖️', label: 'Weight Change',  value: weightChange ?? '...',  color: weightColor },
+  ];
 
   return (
-    <div className='WeeklySummaryMain'>
-      <h1>Weekly / Monthly Summary</h1>
-      <h4>
-        🔥 Streak: {streak === null ? 'Loading...' : `${streak} day${streak !== 1 ? 's' : ''}`}
-      </h4>
-      <h4>
-        📅 Monthly Avg Attendance: {monthlyAvg ?? 'Loading...'}
-      </h4>
-      <h4 style={{ color: getWeightColor() }}>
-        ⚖️ Weight Change Since Start: {weightChange ?? 'Loading...'}
-      </h4>
+    <div className='WeeklySummary'>
+      <span className="WSTitle">Monthly Summary</span>
+      <div className="WSStats">
+        {stats.map((s, i) => (
+          <div className="WSStat" key={i}>
+            <span className="WSStatIcon">{s.icon}</span>
+            <div className="WSStatRight">
+              <span className="WSStatLabel">{s.label}</span>
+              <span className="WSStatValue" style={{ color: s.color }}>{s.value}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

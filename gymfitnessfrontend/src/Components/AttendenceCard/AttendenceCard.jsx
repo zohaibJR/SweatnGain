@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../DashboardCard.css';
 import './AttendenceCard.css';
 
 function AttendenceCard() {
@@ -8,38 +9,34 @@ function AttendenceCard() {
 
   useEffect(() => {
     if (!email) return;
-
-    const fetchTodayStatus = async () => {
+    const fetch = async () => {
       try {
         const res = await axios.get(
           `http://localhost:5000/api/attendance/check-today?email=${email}`
         );
-        if (res.data.marked) {
-          setStatus(res.data.status);
-        } else {
-          setStatus('Not Marked');
-        }
-      } catch (err) {
-        console.error("Failed to fetch today's attendance:", err);
+        setStatus(res.data.marked ? res.data.status : 'Not Marked');
+      } catch {
         setStatus('Error');
       }
     };
-
-    fetchTodayStatus();
+    fetch();
   }, [email]);
 
-  const getStatusStyle = () => {
-    if (status === 'Present') return { color: '#4caf50' };
-    if (status === 'Absent') return { color: '#f44336' };
-    return { color: '#aaa' };
-  };
+  const isPresent  = status === 'Present';
+  const isAbsent   = status === 'Absent';
+  const isUnmarked = status === 'Not Marked' || status === null;
 
   return (
-    <div className='DashboardCard'>
-      <h1>Attendance Today</h1>
-      <h2 style={getStatusStyle()}>
-        {status === null ? 'Loading...' : status}
-      </h2>
+    <div className={`DashboardCard card-attendance ${isPresent ? 'card-green' : isAbsent ? 'card-red' : ''}`}>
+      <div className="CardIcon attendance-icon">🏋️</div>
+      <div className="CardLabel">Today's Attendance</div>
+      <div className={`CardValue ${isPresent ? 'val-green' : isAbsent ? 'val-red' : 'val-muted'}`}>
+        {status === null ? '...' : status}
+      </div>
+      <div className="CardSub">
+        {isPresent ? 'Great job showing up!' : isAbsent ? 'Marked absent today' : 'Not yet marked'}
+      </div>
+      <div className={`CardBar ${isPresent ? 'bar-green' : isAbsent ? 'bar-red' : ''}`} />
     </div>
   );
 }

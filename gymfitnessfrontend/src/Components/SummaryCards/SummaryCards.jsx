@@ -2,6 +2,7 @@ import React from 'react';
 import AttendenceCard from '../AttendenceCard/AttendenceCard';
 import MonthlyAttendence from '../MonthlyAttendeceCard/MonthlyAttendence';
 import CurrentWeight from '../CurrentWeight/CurrentWeight';
+import WeightChange from '../WeightChange/WeightChange';
 import './SummaryCards.css';
 
 function SummaryCards() {
@@ -11,6 +12,7 @@ function SummaryCards() {
         <AttendenceCard />
         <MonthlyAttendence />
         <CurrentWeight />
+        <WeightChange />
       </div>
     </div>
   );

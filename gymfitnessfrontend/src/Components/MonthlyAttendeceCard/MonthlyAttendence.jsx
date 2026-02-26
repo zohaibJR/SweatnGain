@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../DashboardCard.css';
 import './MonthlyAttendence.css';
 
 function MonthlyAttendence() {
@@ -7,26 +8,35 @@ function MonthlyAttendence() {
   const email = localStorage.getItem("userEmail");
 
   useEffect(() => {
-    const fetchMonthlyAttendance = async () => {
+    if (!email) return;
+    const fetch = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/attendance/monthly?email=${email}`
-        );
+        const res = await axios.get(`http://localhost:5000/api/attendance/monthly?email=${email}`);
         setAttendance(res.data);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) { console.error(err); }
     };
-
-    if (email) fetchMonthlyAttendance();
+    fetch();
   }, [email]);
 
+  const rate = attendance
+    ? Math.round((attendance.presentCount / attendance.totalDays) * 100)
+    : null;
+
   return (
-    <div className="DashboardCard">
-      <h1>Monthly Attendance</h1>
-      <h2>
-        {attendance ? `${attendance.presentCount} / ${attendance.totalDays} Days` : "Loading..."}
-      </h2>
+    <div className="DashboardCard card-monthly">
+      <div className="CardIcon monthly-icon">📅</div>
+      <div className="CardLabel">Monthly Attendance</div>
+      <div className="CardValue val-cyan">
+        {attendance ? `${attendance.presentCount}/${attendance.totalDays}` : '...'}
+      </div>
+      <div className="MonthlyBarWrap">
+        <div className="MonthlyBarTrack">
+          <div className="MonthlyBarFill" style={{ width: rate ? `${rate}%` : '0%' }} />
+        </div>
+        <span className="MonthlyRate">{rate !== null ? `${rate}%` : ''}</span>
+      </div>
+      <div className="CardSub">{attendance ? attendance.month : 'Loading...'}</div>
+      <div className="CardBar bar-cyan" />
     </div>
   );
 }

@@ -1,19 +1,32 @@
-/* ============================================================
-   14. QuickView.css
-   ============================================================ */
+/* QuickView.css */
+
 .QuickView {
   width: 100%;
-  min-height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 24px;
-  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 18px;
+  align-items: start;
 }
 
-@media (max-width: 1024px) {
-  .QuickView { gap: 18px; }
+.QuickViewRight {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
-@media (max-width: 768px) {
-  .QuickView { flex-direction: column; align-items: center; gap: 16px; }
+
+@media (max-width: 900px) {
+  .QuickView {
+    grid-template-columns: 1fr;
+  }
+  .QuickViewRight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .QuickViewRight {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,57 +1,44 @@
-/* ============================================================
-   7 / 10 / 12. DashboardCard  (AttendenceCard / CurrentWeight / MonthlyAttendence)
-   ============================================================ */
-.DashboardCard {
-  width: 280px;
-  height: 160px;
-  padding: 18px;
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 18px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
-  transition: all 0.3s ease;
+/* MonthlyAttendence.css */
+
+.card-monthly { --card-glow: rgba(0,212,255,0.12); }
+
+.monthly-icon {
+  --card-icon-bg:     rgba(0,212,255,0.12);
+  --card-icon-border: rgba(0,212,255,0.3);
+}
+
+.val-cyan { color: var(--cyan) !important; }
+.bar-cyan { background: linear-gradient(90deg, var(--blue-accent), var(--cyan)) !important; }
+
+.MonthlyBarWrap {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 10px;
+  margin-top: 2px;
 }
 
-.DashboardCard:hover {
-  transform: translateY(-6px);
-  background: var(--card-hover);
-  border-color: var(--blue-bright);
-  box-shadow: 0 14px 36px rgba(33,150,243,0.25);
+.MonthlyBarTrack {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
 }
 
-.DashboardCard h1 {
+.MonthlyBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-accent), var(--cyan));
+  border-radius: 99px;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 6px rgba(0,212,255,0.4);
+}
+
+.MonthlyRate {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 10px;
-  color: var(--white-70);
-}
-
-.DashboardCard h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  letter-spacing: 1px;
-  text-align: center;
-  color: var(--green);
-}
-
-@media (max-width: 1024px) {
-  .DashboardCard { width: 220px; height: 140px; }
-}
-@media (max-width: 768px) {
-  .DashboardCard { width: 45%; height: 130px; margin-bottom: 10px; }
-}
-@media (max-width: 480px) {
-  .DashboardCard { width: 90%; height: 120px; }
-  .DashboardCard h1 { font-size: 12px; }
-  .DashboardCard h2 { font-size: 26px; }
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+  min-width: 36px;
+  text-align: right;
 }

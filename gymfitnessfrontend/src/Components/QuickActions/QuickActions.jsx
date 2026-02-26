@@ -1,18 +1,25 @@
-import React from 'react'
-import '../QuickActions/QuickActions.css'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './QuickActions.css';
 
 function QuickActions() {
+  const navigate = useNavigate();
+
   return (
     <div className='QuickActions'>
+      <span className="QATitle">Quick Actions</span>
 
-        <h2>Quick Actions</h2>
+      <button className="QABtn QABtn-primary" onClick={() => navigate('/attendence')}>
+        <span className="QABtnIcon">🏋️</span>
+        Mark Attendance
+      </button>
 
-        <button>Mark Attendence</button>
-
-        <button>View Record</button>
-      
+      <button className="QABtn QABtn-secondary" onClick={() => navigate('/records')}>
+        <span className="QABtnIcon">📋</span>
+        View Records
+      </button>
     </div>
-  )
+  );
 }
 
-export default QuickActions
+export default QuickActions;

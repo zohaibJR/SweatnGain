@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../LatestRecords/LatestRecords.css';
+import './LatestRecords.css';
 
 function LatestRecords() {
   const [records, setRecords] = useState([]);
@@ -10,68 +10,60 @@ function LatestRecords() {
     const fetchRecords = async () => {
       try {
         const email = localStorage.getItem('userEmail');
-        if (!email) {
-          alert('User not logged in');
-          setLoading(false);
-          return;
-        }
+        if (!email) { setLoading(false); return; }
 
-        // Attendance records
-        const attRes = await axios.get(
-          `http://localhost:5000/api/attendance/last7days/attendance-records?email=${email}`
-        );
+        const [attRes, weightRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/attendance/last7days/attendance-records?email=${email}`),
+          axios.get(`http://localhost:5000/api/attendance/last7days/weight-records?email=${email}`)
+        ]);
 
-        // Weight records
-        const weightRes = await axios.get(
-          `http://localhost:5000/api/attendance/last7days/weight-records?email=${email}`
-        );
-
-        const combinedRecords = attRes.data.map(att => {
+        const combined = attRes.data.map(att => {
           const weightObj = weightRes.data.find(w => w.date === att.date);
-          return {
-            date: att.date,
-            status: att.status,
-            weight: weightObj ? weightObj.weight : null
-          };
+          return { date: att.date, status: att.status, weight: weightObj?.weight ?? null };
         });
 
-        setRecords(combinedRecords);
+        setRecords(combined);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching records:', error);
-        alert('Failed to fetch records');
         setLoading(false);
       }
     };
-
     fetchRecords();
   }, []);
 
-  if (loading) return <div className="LatestRecords">Loading...</div>;
-
   return (
     <div className="LatestRecords">
-      <h1>Latest Records</h1>
-
-      <div className="records-header">
-        <span>Date</span>
-        <span>Weight</span>
-        <span>Attendance</span>
+      <div className="LRHeader">
+        <span className="LRTitle">Latest Records</span>
+        <span className="LRBadge">7 Days</span>
       </div>
 
-      {records.length === 0 ? (
-        <div style={{ color: '#fff', marginTop: '10px' }}>No records found</div>
-      ) : (
-        records.map(record => (
-          <div className="records-row" key={record.date}>
-            <span>{record.date}</span>
-            <span>{record.weight ? `${record.weight} kg` : '-'}</span>
-            <span className={record.status === 'Present' ? 'present' : 'absent'}>
-              {record.status}
-            </span>
-          </div>
-        ))
-      )}
+      <div className="LRTableHead">
+        <span>Date</span>
+        <span>Weight</span>
+        <span>Status</span>
+      </div>
+
+      <div className="LRBody">
+        {loading ? (
+          <div className="LREmpty">Loading...</div>
+        ) : records.length === 0 ? (
+          <div className="LREmpty">No records found</div>
+        ) : (
+          records.map(record => (
+            <div className="LRRow" key={record.date}>
+              <span className="LRDate">{record.date}</span>
+              <span className="LRWeight">
+                {record.weight !== null ? `${record.weight} kg` : '—'}
+              </span>
+              <span className={`LRStatus ${record.status === 'Present' ? 'lrs-present' : 'lrs-absent'}`}>
+                {record.status === 'Present' ? '✅ Present' : '❌ Absent'}
+              </span>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

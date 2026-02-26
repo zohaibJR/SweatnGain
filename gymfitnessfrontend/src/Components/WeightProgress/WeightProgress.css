@@ -1,26 +1,12 @@
-/* ============================================================
-   19. WeightProgress.css
-   ============================================================ */
+/* WeightProgress.css */
+
 .WeightProgress {
   width: 100%;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
-.ProgressCharts {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  padding: 0 12px;
-}
-
-@media (max-width: 1024px) {
-  .ProgressCharts { gap: 20px; }
-}
 @media (max-width: 768px) {
-  .ProgressCharts { flex-direction: column; align-items: center; gap: 18px; }
+  .WeightProgress { grid-template-columns: 1fr; }
 }
