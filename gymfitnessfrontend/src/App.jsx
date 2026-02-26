@@ -5,6 +5,7 @@ import DashBoard from './Pages/DashBoard.jsx';
 import NavBar from './Components/NavBar.jsx';
 import Attendence from './Pages/Attendence.jsx';
 import Aboutus from './Pages/Aboutus.jsx';
+import Records from './Pages/Records.jsx';
 
 // Protected Route
 function ProtectedRoute({ children }) {
@@ -24,13 +25,14 @@ function AppContent() {
 
       <Routes>
         {/* Public */}
-        <Route path="/" element={<Login />} />
+        <Route path="/"       element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
         {/* Protected */}
         <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
+        <Route path="/records"   element={<ProtectedRoute><Records /></ProtectedRoute>} />
         <Route path="/attendence" element={<ProtectedRoute><Attendence /></ProtectedRoute>} />
-        <Route path="/aboutus" element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
+        <Route path="/aboutus"   element={<ProtectedRoute><Aboutus /></ProtectedRoute>} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

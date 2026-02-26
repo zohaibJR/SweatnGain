@@ -1,15 +1,16 @@
 import express from 'express';
 import {
   submitAttendance,
+  checkTodayAttendance,
   getLast7DaysWeight,
-  getLatestWeight,
-  getMonthlyAttendance,
-  getWeightChange,
   getLast7DaysWeightRecords,
   getLast7DaysAttendanceRecords,
   getLast10DaysAttendancePie,
+  getLatestWeight,
+  getWeightChange,
+  getMonthlyAttendance,
   getMonthlyAttendancePie,
-  checkTodayAttendance
+  getMonthlyRecords
 } from '../controllers/attendanceController.js';
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.get('/latest', getLatestWeight);
 router.get('/weight-change', getWeightChange);
 router.get('/monthly', getMonthlyAttendance);
 router.get('/monthly/pie', getMonthlyAttendancePie);
+router.get('/monthly/records', getMonthlyRecords);
 
 export default router;
