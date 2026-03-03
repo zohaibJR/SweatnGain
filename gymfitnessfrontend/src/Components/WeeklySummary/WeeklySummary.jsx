@@ -49,8 +49,8 @@ function WeeklySummary() {
 
   const stats = [
     { icon: '🔥', label: 'Current Streak', value: streak === null ? '...' : `${streak} day${streak !== 1 ? 's' : ''}`, color: '#ff9800' },
-    { icon: '📅', label: 'Monthly Avg',    value: monthlyAvg ?? '...',    color: 'var(--cyan)' },
-    { icon: '⚖️', label: 'Weight Change',  value: weightChange ?? '...',  color: weightColor },
+    { icon: '📅', label: 'Monthly Avg Attendence',    value: monthlyAvg ?? '...',    color: 'var(--cyan)' },
+    { icon: '⚖️', label: 'Weight Change Since Started',  value: weightChange ?? '...',  color: weightColor },
   ];
 
   return (
