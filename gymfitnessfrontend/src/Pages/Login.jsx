@@ -16,24 +16,24 @@ function Login() {
     }
 
     const handleLogin = async () => {
-        try {
-            const res = await axios.post("http://localhost:5000/api/users/login", {
-                email,
-                password
-            });
+    try {
+        const res = await axios.post("http://localhost:5000/api/users/login", {
+            email,
+            password
+        });
 
-            if(res.data.success){
-                    localStorage.setItem("isLoggedIn", "true");
-                    localStorage.setItem("userEmail", email); // <-- store email
-                    navigate('/dashboard');
-            } else {
-                alert("Login failed");
-            }
-
-        } catch (err) {
-            alert(err.response?.data?.message || "Login failed");
+        if (res.data.success) {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("isPro", res.data.user.isPro ? "true" : "false"); // ← add this
+            navigate('/dashboard');
+        } else {
+            alert("Login failed");
         }
+    } catch (err) {
+        alert(err.response?.data?.message || "Login failed");
     }
+}
 
   return (
 <div className='LoginMainDiv'>
